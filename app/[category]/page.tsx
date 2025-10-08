@@ -60,7 +60,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               <Card
                 key={item.id}
                 name={item.name}
-                imageUrl={item.image_url}
+                imageUrl={item.image_url || undefined}
                 priceCents={item.min_price_cents}
                 href={`/item/${item.id}`}
               />
