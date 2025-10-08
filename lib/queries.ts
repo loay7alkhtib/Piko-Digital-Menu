@@ -1,4 +1,4 @@
-import { db } from './database'
+import { supabase } from './supabaseClient'
 import type { Locale } from './i18n'
 import type { Database } from './database'
 
@@ -45,7 +45,7 @@ export interface ItemWithI18n extends Item {
 
 export async function getActiveCategories(locale: Locale): Promise<CategoryWithI18n[]> {
   try {
-    const { data, error } = await db
+    const { data, error } = await supabase
       .from('categories')
       .select(`
         *,
@@ -72,7 +72,7 @@ export async function getActiveCategories(locale: Locale): Promise<CategoryWithI
 
 export async function getCategoryBySlug(slug: string, locale: Locale): Promise<CategoryWithI18n | null> {
   try {
-    const { data, error } = await db
+    const { data, error } = await supabase
       .from('categories')
       .select(`
         *,
@@ -153,7 +153,7 @@ export async function getItemsByCategory(
   locale: Locale
 ): Promise<ItemWithI18n[]> {
   try {
-    const { data, error } = await db
+    const { data, error } = await supabase
       .from('items')
       .select(`
         *,
@@ -196,7 +196,7 @@ export async function getItemById(
   locale: Locale
 ): Promise<ItemWithDetails | null> {
   try {
-    const { data, error } = await db
+    const { data, error } = await supabase
       .from('items')
       .select(`
         *,
@@ -414,7 +414,7 @@ export async function deleteItem(itemId: string): Promise<boolean> {
 
 export async function getAllItemsForAdmin(locale: Locale = 'en'): Promise<ItemWithI18n[]> {
   try {
-    const { data, error } = await db
+    const { data, error } = await supabase
       .from('items')
       .select(`
         *,
@@ -471,7 +471,7 @@ export async function createProfile(data: ProfileInsert): Promise<Profile | null
 
 export async function getProfileByUserId(userId: string): Promise<Profile | null> {
   try {
-    const { data, error } = await db
+    const { data, error } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', userId)
