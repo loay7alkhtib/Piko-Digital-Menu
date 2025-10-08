@@ -6,6 +6,12 @@ export default async function Home() {
   // For now, we'll use English as default since this is server-side
   // The client-side locale switching will work on other pages
   const categories = await getActiveCategories('en')
+  
+  // Debug logging
+  console.log('Home page - categories fetched:', categories.length)
+  if (categories.length > 0) {
+    console.log('First category:', categories[0])
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -53,11 +59,14 @@ export default async function Home() {
           <div className="text-center py-12">
             <div className="text-6xl mb-4">📋</div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              No categories available
+              Loading categories...
             </h3>
             <p className="text-gray-500">
-              Categories will appear here once they&apos;re added to the system.
+              Please wait while we fetch the menu categories.
             </p>
+            <div className="mt-4">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            </div>
           </div>
         )}
       </main>
