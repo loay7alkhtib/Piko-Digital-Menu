@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { getItemsByCategory, getCategoryBySlug } from '@/app/(data)/queries'
+import { getItemsByCategory, getCategoryBySlug } from '@/lib/queries'
 import Card from '@/components/Card'
 import LocaleSwitch from '@/components/LocaleSwitch'
 

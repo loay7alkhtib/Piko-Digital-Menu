@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { getItemById } from '@/app/(data)/queries'
+import { getItemById } from '@/lib/queries'
 import Price from '@/components/Price'
 import LocaleSwitch from '@/components/LocaleSwitch'
 

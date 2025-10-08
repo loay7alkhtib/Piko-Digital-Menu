@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getActiveCategories } from '@/app/(data)/queries'
+import { getActiveCategories } from '@/lib/queries'
 import LocaleSwitch from '@/components/LocaleSwitch'
 
 export default async function Home() {
