@@ -51,7 +51,7 @@ export async function getActiveCategories(locale: Locale): Promise<(Category & {
     .from('categories')
     .select(`
       *,
-      category_i18n!inner(name)
+      category_i18n(name)
     `)
     .eq('is_active', true)
     .eq('category_i18n.locale', locale)
@@ -76,9 +76,9 @@ export async function getItemsByCategory(
     .from('items')
     .select(`
       *,
-      item_i18n!inner(name),
+      item_i18n(name),
       item_prices(price_cents, is_active),
-      categories!inner(slug)
+      categories(slug)
     `)
     .eq('categories.slug', categorySlug)
     .eq('is_active', true)
@@ -117,10 +117,10 @@ export async function getItemById(
     .from('items')
     .select(`
       *,
-      item_i18n!inner(name, description),
+      item_i18n(name, description),
       item_prices(*),
-      categories!inner(
-        category_i18n!inner(name)
+      categories(
+        category_i18n(name)
       )
     `)
     .eq('id', itemId)
@@ -151,7 +151,7 @@ export async function getCategoryBySlug(slug: string, locale: Locale): Promise<(
     .from('categories')
     .select(`
       *,
-      category_i18n!inner(name)
+      category_i18n(name)
     `)
     .eq('slug', slug)
     .eq('is_active', true)

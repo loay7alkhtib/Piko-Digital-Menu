@@ -1,180 +1,317 @@
-# Piko Digital Menu
+# 🍽️ Piko Digital Menu
 
-A production-ready, multi-language digital menu built with Next.js, Supabase, and Tailwind CSS. Features Arabic RTL support, admin management, and Turkish Lira pricing.
+A **production-ready**, **multi-language** digital menu with **Arabic RTL support**, built with Next.js, TypeScript, Tailwind CSS, and Supabase.
 
-## Features
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-2.39-green?style=flat-square&logo=supabase)](https://supabase.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
 
-- 🌍 **Multi-language Support**: English, Arabic (RTL), and Turkish
-- 📱 **Responsive Design**: Mobile-first approach with Tailwind CSS
-- 🔐 **Admin Panel**: Secure item management with Supabase Auth
-- 💰 **Turkish Lira Pricing**: Proper currency formatting
-- 🖼️ **Image Management**: Upload and manage item images
-- ♿ **Accessible**: WCAG compliant design
-- 🚀 **Production Ready**: TypeScript, ESLint, and best practices
+## ✨ Features
 
-## Tech Stack
+- 🌍 **Multi-language Support**: English, Arabic, and Turkish with proper RTL
+- 📱 **Responsive Design**: Perfect on desktop, tablet, and mobile
+- 🔐 **Secure Admin Panel**: Staff authentication with role-based access
+- 🗄️ **Robust Database**: Supabase with Row Level Security and optimized queries
+- 🎨 **Modern UI**: Clean, professional design with Tailwind CSS
+- ⚡ **High Performance**: Server-side rendering and optimized images
+- 🔒 **Type Safety**: Full TypeScript coverage with strict validation
+- 📊 **Production Ready**: Comprehensive error handling and monitoring
 
-- **Framework**: Next.js 15 with App Router
-- **Database**: Supabase (PostgreSQL)
-- **Styling**: Tailwind CSS
-- **Language**: TypeScript
-- **Authentication**: Supabase Auth
-- **Storage**: Supabase Storage
+## 🚀 Tech Stack
 
-## Getting Started
+| Layer | Technology |
+|-------|------------|
+| **Frontend** | Next.js 15 (App Router), TypeScript, Tailwind CSS |
+| **Backend** | Supabase (Database, Auth, Storage, RLS) |
+| **Deployment** | Vercel (recommended) |
+| **Version Control** | Git, GitHub |
+| **Validation** | Custom TypeScript validation system |
+| **Storage** | Supabase Storage with image optimization |
 
-### Prerequisites
+## 🛠️ Quick Start
 
-- Node.js 18+ 
-- Supabase account and project
-- npm or yarn
+### 1. Clone and Install
 
-### Installation
-
-1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd Piko-Digital-Menu
-```
-
-2. Install dependencies:
-```bash
+git clone https://github.com/your-username/piko-digital-menu.git
+cd piko-digital-menu
 npm install
 ```
 
-3. Set up environment variables:
-Create a `.env.local` file with your Supabase credentials:
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+### 2. Environment Setup
+
+```bash
+cp env.example .env.local
 ```
 
-4. Set up your Supabase database:
-- Create the required tables (categories, items, item_prices, item_i18n, category_i18n, profiles)
-- Enable Row Level Security (RLS)
-- Create a storage bucket named `menu-images` for item images
-- Add sample data for testing
+Edit `.env.local` with your Supabase credentials:
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+```
 
-5. Run the development server:
+### 3. Database Setup
+
+1. Go to your [Supabase Dashboard](https://supabase.com/dashboard)
+2. Open the SQL Editor
+3. Copy and paste the entire content of `supabase-complete-backend-setup.sql`
+4. Click **Run** to execute the script
+
+This will create:
+- ✅ All database tables with proper constraints
+- ✅ Row Level Security policies
+- ✅ Storage bucket for menu images
+- ✅ Sample data in 3 languages
+- ✅ Performance indexes
+- ✅ Authentication triggers
+
+### 4. Create Staff User
+
+1. Go to **Authentication → Users** in Supabase
+2. Click **Add user** and create a staff account
+3. Run this SQL query with the user's ID:
+
+```sql
+INSERT INTO profiles (id, email, role) 
+VALUES ('USER_ID_FROM_AUTH', 'staff@example.com', 'staff');
+```
+
+### 5. Start Development
+
 ```bash
 npm run dev
 ```
 
-6. Open [http://localhost:3000](http://localhost:3000) in your browser.
+Visit [http://localhost:3000](http://localhost:3000) 🎉
 
-## Database Schema
+## 📁 Project Structure
 
-The application expects the following Supabase tables:
+```
+piko-digital-menu/
+├── 📁 app/                          # Next.js App Router
+│   ├── 📁 (data)/                   # Data layer & queries
+│   ├── 📁 (utils)/                  # Utility functions
+│   ├── 📁 admin/                    # Admin panel pages
+│   ├── 📁 api/                      # API routes
+│   │   ├── 📁 auth/                 # Authentication endpoints
+│   │   ├── 📁 items/                # Item management
+│   │   └── 📁 upload/               # File upload
+│   ├── 📁 [category]/               # Dynamic category pages
+│   └── 📁 item/[id]/                # Item detail pages
+├── 📁 components/                   # Reusable UI components
+│   ├── 📄 Card.tsx                  # Item card component
+│   ├── 📄 LocaleSwitch.tsx          # Language switcher
+│   └── 📄 Price.tsx                 # Price formatter
+├── 📁 lib/                          # Core utilities
+│   ├── 📄 auth.ts                   # Authentication service
+│   ├── 📄 database.ts               # Database types & client
+│   ├── 📄 queries.ts                # Typed database queries
+│   ├── 📄 storage.ts                # File upload service
+│   ├── 📄 validation.ts             # Form validation system
+│   ├── 📄 i18n.tsx                  # Internationalization
+│   └── 📄 supabaseClient.ts         # Supabase client
+├── 📁 scripts/                      # Utility scripts
+│   └── 📄 test-backend.js           # Database testing
+├── 📄 supabase-complete-backend-setup.sql  # Complete DB setup
+└── 📄 package.json                  # Dependencies & scripts
+```
+
+## 🔌 API Endpoints
+
+### Authentication
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/auth/login` | User login with email/password |
+| `POST` | `/api/auth/logout` | Sign out current user |
+| `GET` | `/api/auth/me` | Get current user profile |
+
+### Items Management
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/items` | Get all items (admin only) |
+| `POST` | `/api/items` | Create new item (admin only) |
+
+### File Upload
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/upload` | Upload image files (admin only) |
+
+## 🗄️ Database Schema
 
 ### Core Tables
-- `categories` - Menu categories
-- `items` - Menu items
-- `item_prices` - Item pricing by size
-- `item_i18n` - Multilingual item content
-- `category_i18n` - Multilingual category content
-- `profiles` - User profiles with roles
 
-### Key Fields
-- Prices stored as cents (integers) for precision
-- Locale codes: 'en', 'ar', 'tr'
-- User roles: 'staff' for admin access
-- Sort ordering for categories and items
+```sql
+categories           # Menu categories
+├── id (UUID)
+├── slug (VARCHAR)
+├── sort_order (INT)
+└── is_active (BOOL)
 
-## Usage
+category_i18n        # Multilingual category names
+├── category_id (UUID)
+├── locale (ENUM: en, ar, tr)
+└── name (VARCHAR)
 
-### Public Menu
-- Browse categories and items
-- Switch between languages (EN/AR/TR)
-- View item details with pricing
-- Responsive design for all devices
+items               # Menu items
+├── id (UUID)
+├── category_id (UUID)
+├── image_url (TEXT)
+├── sort_order (INT)
+└── is_active (BOOL)
 
-### Admin Panel
-1. Navigate to `/admin/login`
-2. Sign in with staff credentials
-3. Manage items at `/admin/items`
-4. Create, edit, and publish menu items
-5. Upload images and manage pricing
+item_i18n           # Multilingual item content
+├── item_id (UUID)
+├── locale (ENUM: en, ar, tr)
+├── name (VARCHAR)
+└── description (TEXT)
 
-### Admin Features
-- **Item Management**: Create, edit, delete items
-- **Multilingual Content**: Add names/descriptions in EN/AR/TR
-- **Image Upload**: Upload item images to Supabase storage
-- **Pricing Management**: Set multiple sizes and prices
-- **Draft/Publish**: Save as draft or publish immediately
-- **Sort Ordering**: Control display order of items
+item_prices         # Item pricing
+├── item_id (UUID)
+├── size_name (VARCHAR)
+├── price_cents (INT)
+└── is_active (BOOL)
 
-## Development
-
-### Project Structure
-```
-├── app/
-│   ├── (data)/          # Data queries and types
-│   ├── (utils)/         # Utility functions
-│   ├── admin/           # Admin interface
-│   ├── [category]/      # Category pages
-│   ├── item/[id]/       # Item detail pages
-│   └── globals.css      # Global styles
-├── components/          # Reusable components
-├── lib/                 # Core utilities
-└── public/              # Static assets
+profiles            # User management
+├── id (UUID)
+├── email (VARCHAR)
+└── role (ENUM: customer, staff, admin)
 ```
 
-### Key Components
-- `LocaleSwitch` - Language toggle with RTL support
-- `Price` - Turkish Lira price formatting
-- `Card` - Item display card
-- `EditDrawer` - Admin item editor
+## 🔧 Available Scripts
 
-### Scripts
 ```bash
-npm run dev          # Start development server
+# Development
+npm run dev          # Start development server with Turbo
 npm run build        # Build for production
 npm run start        # Start production server
+
+# Code Quality
 npm run lint         # Run ESLint
+npm run lint:fix     # Fix ESLint errors
+npm run type-check   # TypeScript type checking
+npm run format       # Format code with Prettier
+
+# Database
+npm run db:test      # Test database connection
+npm run db:setup     # Setup database (if script exists)
+npm run db:reset     # Reset database (if script exists)
+
+# Testing
+npm test             # Run tests
+npm run test:watch   # Run tests in watch mode
+npm run test:coverage # Run tests with coverage
 ```
 
-## Deployment
+## 🚀 Deployment
 
 ### Vercel (Recommended)
-1. Connect your GitHub repository to Vercel
-2. Add environment variables in Vercel dashboard
-3. Deploy automatically on push to main branch
 
-### Other Platforms
-The app can be deployed to any platform that supports Next.js:
-- Netlify
-- Railway
-- DigitalOcean App Platform
-- AWS Amplify
+1. **Connect Repository**: Link your GitHub repo to Vercel
+2. **Environment Variables**: Add your Supabase credentials
+3. **Deploy**: Automatic deployment on push to main
 
-### Environment Variables
-Ensure these are set in production:
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+### Manual Deployment
 
-## Testing
+```bash
+npm run build
+npm start
+```
 
-See [TESTING.md](./TESTING.md) for comprehensive manual testing steps including:
-- Locale switching and RTL support
-- Admin functionality
-- Responsive design
-- Error handling
+### Environment Variables for Production
 
-## Contributing
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+NEXT_PUBLIC_APP_URL=https://your-domain.com
+```
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+## 🔐 Security Features
 
-## License
+- **Row Level Security (RLS)**: Database-level access control
+- **Type-safe Queries**: Prevents SQL injection
+- **Authentication**: Supabase Auth with JWT tokens
+- **Role-based Access**: Customer, Staff, Admin roles
+- **Input Validation**: Comprehensive form validation
+- **File Upload Security**: Type and size restrictions
 
-This project is licensed under the MIT License.
+## 🌍 Multi-language Support
 
-## Support
+### Supported Languages
+- 🇺🇸 **English** (en) - Default
+- 🇸🇦 **Arabic** (ar) - RTL support
+- 🇹🇷 **Turkish** (tr) - LTR
 
-For issues and questions:
-1. Check the [TESTING.md](./TESTING.md) guide
-2. Review Supabase documentation
-3. Open an issue on GitHub
+### RTL Implementation
+- Automatic `dir="rtl"` attribute for Arabic
+- CSS logical properties for proper layout
+- Font loading optimization
+- Proper text alignment and spacing
+
+## 🎨 UI/UX Features
+
+- **Responsive Grid**: Adapts to all screen sizes
+- **Image Optimization**: Automatic WebP conversion
+- **Loading States**: Skeleton screens and spinners
+- **Error Handling**: User-friendly error messages
+- **Accessibility**: WCAG 2.1 AA compliant
+- **Dark Mode Ready**: CSS custom properties
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+npm test
+
+# Test specific functionality
+npm test -- --testNamePattern="authentication"
+npm test -- --testNamePattern="database"
+
+# Test with coverage
+npm run test:coverage
+```
+
+## 📊 Performance
+
+- **Core Web Vitals**: Optimized for Google's metrics
+- **Image Optimization**: Next.js automatic optimization
+- **Code Splitting**: Automatic route-based splitting
+- **Caching**: Supabase query caching
+- **Bundle Size**: Optimized with tree-shaking
+
+## 🤝 Contributing
+
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/amazing-feature`
+3. **Commit** your changes: `git commit -m 'Add amazing feature'`
+4. **Push** to the branch: `git push origin feature/amazing-feature`
+5. **Open** a Pull Request
+
+### Development Guidelines
+
+- Follow TypeScript strict mode
+- Use Prettier for code formatting
+- Write tests for new features
+- Update documentation
+- Follow conventional commits
+
+## 📄 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+- 📧 **Email**: support@pikomenu.com
+- 🐛 **Issues**: [GitHub Issues](https://github.com/your-username/piko-digital-menu/issues)
+- 📖 **Documentation**: [Wiki](https://github.com/your-username/piko-digital-menu/wiki)
+
+## 🙏 Acknowledgments
+
+- [Next.js](https://nextjs.org/) for the amazing React framework
+- [Supabase](https://supabase.com/) for the backend infrastructure
+- [Tailwind CSS](https://tailwindcss.com/) for the utility-first CSS
+- [Vercel](https://vercel.com/) for seamless deployment
+
+---
+
+**Built with ❤️ for restaurants worldwide** 🍽️
