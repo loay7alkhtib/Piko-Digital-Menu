@@ -61,8 +61,8 @@ export async function getActiveCategories(locale: Locale): Promise<CategoryWithI
     }
 
     return data?.map(cat => ({
-      ...cat,
-      name: cat.category_i18n?.[0]?.name || cat.slug
+      ...(cat as any),
+      name: (cat as any).category_i18n?.[0]?.name || (cat as any).slug
     })) || []
   } catch (error) {
     console.error('Unexpected error fetching categories:', error)
@@ -89,8 +89,8 @@ export async function getCategoryBySlug(slug: string, locale: Locale): Promise<C
     }
 
     return {
-      ...data,
-      name: data.category_i18n?.[0]?.name || data.slug
+      ...(data as any),
+      name: (data as any).category_i18n?.[0]?.name || (data as any).slug
     }
   } catch (error) {
     console.error('Unexpected error fetching category:', error)
@@ -106,7 +106,7 @@ export async function createCategory(data: {
 }): Promise<Category | null> {
   try {
     // Create category
-    const { data: category, error: catError } = await db
+    const { data: category, error: catError } = await (db as any)
       .from('categories')
       .insert({
         slug: data.slug,
@@ -128,7 +128,7 @@ export async function createCategory(data: {
       name: t.name
     }))
 
-    const { error: transError } = await db
+    const { error: transError } = await (db as any)
       .from('category_i18n')
       .insert(translations)
 
@@ -172,15 +172,15 @@ export async function getItemsByCategory(
     }
 
     return data?.map(item => {
-      const activePrices = item.item_prices?.filter((price: any) => price.is_active) || []
+      const activePrices = (item as any).item_prices?.filter((price: any) => price.is_active) || []
       const minPrice = activePrices.length > 0 
         ? Math.min(...activePrices.map((price: any) => price.price_cents))
         : 0
 
       return {
-        ...item,
-        name: item.item_i18n?.[0]?.name || 'Untitled',
-        description: item.item_i18n?.[0]?.description,
+        ...(item as any),
+        name: (item as any).item_i18n?.[0]?.name || 'Untitled',
+        description: (item as any).item_i18n?.[0]?.description,
         min_price_cents: minPrice,
         prices: activePrices.sort((a: any, b: any) => a.sort_order - b.sort_order)
       }
@@ -216,14 +216,14 @@ export async function getItemById(
       return null
     }
 
-    const activePrices = data.item_prices?.filter((price: any) => price.is_active) || []
+    const activePrices = (data as any).item_prices?.filter((price: any) => price.is_active) || []
 
     return {
-      ...data,
-      name: data.item_i18n?.[0]?.name || 'Untitled',
-      description: data.item_i18n?.[0]?.description,
+      ...(data as any),
+      name: (data as any).item_i18n?.[0]?.name || 'Untitled',
+      description: (data as any).item_i18n?.[0]?.description,
       prices: activePrices.sort((a: any, b: any) => a.sort_order - b.sort_order),
-      category_name: data.categories?.category_i18n?.[0]?.name || 'Unknown',
+      category_name: (data as any).categories?.category_i18n?.[0]?.name || 'Unknown',
       min_price_cents: activePrices.length > 0 
         ? Math.min(...activePrices.map((price: any) => price.price_cents))
         : 0
@@ -244,7 +244,7 @@ export async function createItem(data: {
 }): Promise<Item | null> {
   try {
     // Create item
-    const { data: item, error: itemError } = await db
+    const { data: item, error: itemError } = await (db as any)
       .from('items')
       .insert({
         category_id: data.category_id,
@@ -268,7 +268,7 @@ export async function createItem(data: {
       description: t.description || null
     }))
 
-    const { error: transError } = await db
+    const { error: transError } = await (db as any)
       .from('item_i18n')
       .insert(translations)
 
@@ -285,7 +285,7 @@ export async function createItem(data: {
       sort_order: p.sort_order ?? index
     }))
 
-    const { error: pricesError } = await db
+    const { error: pricesError } = await (db as any)
       .from('item_prices')
       .insert(prices)
 
@@ -314,7 +314,7 @@ export async function updateItem(
 ): Promise<boolean> {
   try {
     // Update item
-    const { error: itemError } = await db
+    const { error: itemError } = await (db as any)
       .from('items')
       .update({
         category_id: data.category_id,
@@ -333,7 +333,7 @@ export async function updateItem(
     // Update translations if provided
     if (data.translations) {
       // Delete existing translations
-      await db
+      await (db as any)
         .from('item_i18n')
         .delete()
         .eq('item_id', itemId)
@@ -346,7 +346,7 @@ export async function updateItem(
         description: t.description || null
       }))
 
-      const { error: transError } = await db
+      const { error: transError } = await (db as any)
         .from('item_i18n')
         .insert(translations)
 
@@ -359,7 +359,7 @@ export async function updateItem(
     // Update prices if provided
     if (data.prices) {
       // Delete existing prices
-      await db
+      await (db as any)
         .from('item_prices')
         .delete()
         .eq('item_id', itemId)
@@ -372,7 +372,7 @@ export async function updateItem(
         sort_order: p.sort_order ?? index
       }))
 
-      const { error: pricesError } = await db
+      const { error: pricesError } = await (db as any)
         .from('item_prices')
         .insert(prices)
 
@@ -391,7 +391,7 @@ export async function updateItem(
 
 export async function deleteItem(itemId: string): Promise<boolean> {
   try {
-    const { error } = await db
+    const { error } = await (db as any)
       .from('items')
       .delete()
       .eq('id', itemId)
@@ -434,10 +434,10 @@ export async function getAllItemsForAdmin(locale: Locale = 'en'): Promise<ItemWi
     }
 
     return data?.map(item => ({
-      ...item,
-      name: item.item_i18n?.[0]?.name || 'Untitled',
-      description: item.item_i18n?.[0]?.description,
-      prices: item.item_prices?.sort((a: any, b: any) => a.sort_order - b.sort_order) || []
+      ...(item as any),
+      name: (item as any).item_i18n?.[0]?.name || 'Untitled',
+      description: (item as any).item_i18n?.[0]?.description,
+      prices: (item as any).item_prices?.sort((a: any, b: any) => a.sort_order - b.sort_order) || []
     })) || []
   } catch (error) {
     console.error('Unexpected error fetching items for admin:', error)
@@ -451,7 +451,7 @@ export async function getAllItemsForAdmin(locale: Locale = 'en'): Promise<ItemWi
 
 export async function createProfile(data: ProfileInsert): Promise<Profile | null> {
   try {
-    const { data: profile, error } = await db
+    const { data: profile, error } = await (db as any)
       .from('profiles')
       .insert(data)
       .select()
@@ -491,7 +491,7 @@ export async function getProfileByUserId(userId: string): Promise<Profile | null
 
 export async function updateProfileRole(userId: string, role: 'customer' | 'staff' | 'admin'): Promise<boolean> {
   try {
-    const { error } = await db
+    const { error } = await (db as any)
       .from('profiles')
       .update({ role, updated_at: new Date().toISOString() })
       .eq('id', userId)
