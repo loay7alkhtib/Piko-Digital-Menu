@@ -4,7 +4,9 @@
  * React hooks and components for authentication
  * This file is client-side only and contains React hooks
  */
-import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+
 import { AuthService, AuthState } from './auth'
 
 /**
@@ -34,7 +36,7 @@ export function useAuth() {
 /**
  * Higher-order component for protecting admin routes
  */
-export function withAuth<T extends {}>(Component: React.ComponentType<T>) {
+export function withAuth<T extends object>(Component: React.ComponentType<T>) {
   return function AuthenticatedComponent(props: T) {
     const { user, profile, loading } = useAuth()
 
@@ -52,12 +54,12 @@ export function withAuth<T extends {}>(Component: React.ComponentType<T>) {
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">Authentication Required</h1>
             <p className="text-gray-600 mb-6">Please sign in to access this page.</p>
-            <a 
-              href="/admin/login" 
+            <Link
+              href="/admin/login"
               className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
             >
               Go to Login
-            </a>
+            </Link>
           </div>
         </div>
       )
@@ -68,13 +70,13 @@ export function withAuth<T extends {}>(Component: React.ComponentType<T>) {
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h1>
-            <p className="text-gray-600 mb-6">You don't have permission to access this page.</p>
-            <a 
-              href="/admin/login" 
+            <p className="text-gray-600 mb-6">You don’t have permission to access this page.</p>
+            <Link
+              href="/admin/login"
               className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
             >
               Sign Out
-            </a>
+            </Link>
           </div>
         </div>
       )
